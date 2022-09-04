@@ -57,3 +57,40 @@ if (place_meeting(x,y+vsp,oWall)){
 
 y += vsp;
 
+var aimside = sign(mouse_x - x);
+if (aimside !=0) image_xscale = aimside;
+
+if (!place_meeting(x,y+1,oWall)) {
+	// draw his airborne sprite
+	sprite_index = sPlayer_air;
+	// don't animate it
+	image_speed = 0;
+	
+	//if he's falling, use the second frame of his sprite, if he's jumping
+	//use the first
+	if (sign(vsp) > 0) image_index = 1; else image_index = 0;
+ }
+// if there's a collision below the player and therefore he's on the ground,
+else {
+	if (sprite_index == sPlayer_air) {
+/*		audio_sound_pitch(snLanding,random_range(0.7,1.3));
+		audio_play_sound(snLanding,4,false);
+		repeat(5) {
+			with (instance_create_layer(x,bbox_bottom,"Bullet",oDust)) {
+				vsp = 0;
+			}
+		}*/
+	}
+	// start animating
+	 image_speed = 1;
+	 
+	 //if the player is still, use the default idle sprite.
+	 if (hsp == 0) {
+		 sprite_index = sPlayer_id;
+	 }
+	 //if the player is moving, use the run sprite animation
+	 else {
+		 sprite_index = sPlayer_run;
+		 if (aimside != sign(hsp)) sprite_index = sPlayer_runback;
+	 }
+}
